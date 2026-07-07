@@ -174,8 +174,16 @@
   .two-col { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: start; }
   @media (max-width: 860px){ .two-col { grid-template-columns: 1fr; } }
   .fb-frame { background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px;
-    overflow: hidden; }
-  .fb-frame iframe { width: 100%; border: none; display: block; }
+    overflow: hidden; position: relative; min-height: 300px; }
+  .fb-frame iframe { width: 100%; border: none; display: block; position: relative; z-index: 2; }
+  .fb-fallback-card { position: absolute; inset: 14px; z-index: 1; display: flex;
+    flex-direction: column; align-items: center; justify-content: center; text-align: center;
+    gap: 10px; padding: 24px; color: var(--muted); }
+  .fb-fallback-mark { width: 46px; height: 46px; border-radius: 10px; background: #1877f2;
+    color: #fff; font-family: Georgia, serif; font-weight: 700; font-size: 30px;
+    display: flex; align-items: center; justify-content: center; }
+  .fb-fallback-card strong { color: var(--ink); font-size: 17px; }
+  .fb-fallback-card p { margin: 0; font-size: 13.5px; max-width: 240px; }
   .fb-fallback { font-size: 13px; color: var(--muted); margin-top: 8px; }
   .action-card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:28px; }
   .action-card h3 { font-size: 24px; font-weight: 800; text-transform: uppercase; }
@@ -373,15 +381,24 @@
       <!-- Facebook embed -->
       <div>
         <div class="fb-frame">
+          <!-- Fallback shown if the plugin is blocked or slow; the iframe sits on top -->
+          <div class="fb-fallback-card">
+            <div class="fb-fallback-mark">f</div>
+            <strong>Ambo ACT on Facebook</strong>
+            <p>Follow for campaign updates, and share each post to keep the pressure on.</p>
+            <a href="https://www.facebook.com/AmboACT/" target="_blank" rel="noopener"
+               class="btn btn-red">Open our Facebook page</a>
+          </div>
           <iframe
-            title="Ambos ACT on Facebook"
-            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FAmbosACT&tabs=timeline&width=500&height=620&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true"
-            height="620" scrolling="no" frameborder="0" allowfullscreen="true"
+            title="Ambo ACT on Facebook"
+            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FAmboACT%2F&tabs=timeline&width=500&height=620&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true"
+            width="500" height="620" style="border:none;overflow:hidden" scrolling="no"
+            frameborder="0" allowfullscreen="true"
             allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
           </iframe>
         </div>
-        <p class="fb-fallback">Feed not loading? Visit
-          <a href="https://www.facebook.com/AmbosACT" target="_blank" rel="noopener">facebook.com/AmbosACT</a>
+        <p class="fb-fallback">Feed not loading? Some browsers and ad blockers block Facebook.
+          Visit <a href="https://www.facebook.com/AmboACT/" target="_blank" rel="noopener">facebook.com/AmboACT</a>
           directly.</p>
       </div>
 
@@ -396,10 +413,10 @@
             today's call-out numbers and tag your local representatives. The load is public —
             make it visible.</span></li>
           <li><span class="num">3</span><span><strong>Follow &amp; amplify.</strong> Like the
-            Ambos ACT page and share each post. Public pressure is what moves budgets.</span></li>
+            Ambo ACT page and share each post. Public pressure is what moves budgets.</span></li>
         </ul>
-        <a href="https://www.facebook.com/AmbosACT" target="_blank" rel="noopener"
-           class="btn btn-red" style="margin-top:22px">Follow Ambos ACT on Facebook</a>
+        <a href="https://www.facebook.com/AmboACT/" target="_blank" rel="noopener"
+           class="btn btn-red" style="margin-top:22px">Follow Ambo ACT on Facebook</a>
       </div>
     </div>
   </div>
@@ -409,7 +426,7 @@
 <footer>
   <div class="wrap">
     <div class="brand" style="color:#fff; margin-bottom:6px">Ambos ACT</div>
-    Ambos ACT. A campaign to properly fund the ACT Ambulance Service.
+    Authorised by Ambos ACT, Canberra ACT. A campaign to properly fund the ACT Ambulance Service.
     <div class="disc">
       Live figures are drawn from the ACT Emergency Services Agency public incidents feed
       (CC BY 4.0) and count unique physical emergency ambulance responses over a rolling
@@ -418,7 +435,9 @@
       total workload, not an official statistic. Performance and workforce figures are
       attributed to their sources inline: Report on Government Services 2026 (Productivity
       Commission), the ACTAS Quarterly Performance Report (Q1 2026), and reporting by
-      The Canberra Times and FOI disclosures (2026).    </div>
+      The Canberra Times and FOI disclosures (2026). Replace placeholder links and the
+      Facebook page handle with the campaign's official channels before publishing.
+    </div>
   </div>
 </footer>
 
