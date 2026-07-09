@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Increment Gap — ACT vs Victoria paramedic pay</title>
+<meta name="description" content="Compare your ACTAS pay against the Ambulance Victoria EBA 2024. See what a real increment structure would be worth to you.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBFAF6;
+  --ink:#12161B;
+  --ink-soft:#4A5158;
+  --green:#00703C;      /* ambulance battenburg green */
+  --green-deep:#004F2A;
+  --hivis:#E8F000;      /* hi-vis yellow-green */
+  --hivis-soft:#F6FA9A;
+  --red:#D2232A;        /* signal red — the gap */
+  --red-deep:#9E1218;
+  --line:#D9D6CC;
+  --card:#FFFFFF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Barlow',system-ui,sans-serif;
+  font-size:17px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.display{font-family:'Anton',sans-serif;font-weight:400;letter-spacing:.01em;text-transform:uppercase;line-height:.95}
+.cond{font-family:'Barlow Condensed',sans-serif}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- Battenburg checker strip (signature) ---------- */
+.batten{height:26px;display:flex;flex-direction:column}
+.batten .row{flex:1;background:repeating-linear-gradient(90deg,var(--hivis) 0 26px,var(--green) 26px 52px)}
+.batten .row+.row{background:repeating-linear-gradient(90deg,var(--green) 0 26px,var(--hivis) 26px 52px)}
+.batten.thin{height:14px}.batten.thin .row{background-size:auto}
+.batten.thin .row{background:repeating-linear-gradient(90deg,var(--hivis) 0 14px,var(--green) 14px 28px)}
+.batten.thin .row+.row{background:repeating-linear-gradient(90deg,var(--green) 0 14px,var(--hivis) 14px 28px)}
+
+.wrap{max-width:1060px;margin:0 auto;padding:0 22px}
+
+/* ---------- Top bar ---------- */
+.topbar{background:var(--ink);color:#fff;font-size:14px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:10px;padding-bottom:10px;gap:12px}
+.topbar strong{color:var(--hivis);letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+.topbar a{color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35)}
+.topbar a:hover{border-color:var(--hivis)}
+
+/* ---------- Hero ---------- */
+.hero{padding:64px 0 48px;position:relative}
+.eyebrow{display:inline-block;font-family:'Barlow Condensed';font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:14px;color:var(--green);border:1.5px solid var(--green);padding:4px 12px;margin-bottom:22px}
+.hero h1{font-size:clamp(42px,7.2vw,86px);max-width:15ch}
+.hero h1 .flat{color:var(--red)}
+.hero p.lede{margin-top:22px;max-width:56ch;font-size:19px;color:var(--ink-soft)}
+.hero p.lede b{color:var(--ink)}
+.hl{background:linear-gradient(0deg,var(--hivis) 0 45%,transparent 45%);padding:0 2px}
+
+/* ---------- Calculator ---------- */
+.calc{background:var(--ink);color:#fff;padding:52px 0 60px}
+.calc h2{font-size:clamp(26px,3.4vw,38px);margin-bottom:6px}
+.calc .sub{color:#B9C0C7;margin-bottom:30px;max-width:60ch}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:34px}
+@media(max-width:760px){.controls{grid-template-columns:1fr}}
+.label{font-family:'Barlow Condensed';font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:14px;color:var(--hivis);display:block;margin-bottom:10px}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1.5px solid #3A424B}
+.seg button{appearance:none;background:transparent;border:none;border-right:1.5px solid #3A424B;color:#C7CDD3;font:600 15px/1 'Barlow Condensed';letter-spacing:.08em;text-transform:uppercase;padding:14px 6px;cursor:pointer;transition:background .15s,color .15s}
+.seg button:last-child{border-right:none}
+.seg button[aria-pressed="true"]{background:var(--hivis);color:var(--ink)}
+.seg button:focus-visible{outline:3px solid var(--hivis);outline-offset:-3px}
+.slider-row{display:flex;align-items:center;gap:18px}
+input[type=range]{flex:1;accent-color:var(--hivis);height:34px}
+input[type=range]:focus-visible{outline:3px solid var(--hivis);outline-offset:4px}
+.yos-badge{font-family:'Anton';font-size:34px;min-width:96px;text-align:center;background:#fff;color:var(--ink);padding:4px 10px}
+.yos-badge small{display:block;font:600 11px/1.1 'Barlow Condensed';letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+
+/* result board */
+.board{display:grid;grid-template-columns:1fr 1fr 1.35fr;border:1.5px solid #3A424B}
+@media(max-width:820px){.board{grid-template-columns:1fr 1fr}.board .cell.gap{grid-column:1/-1}}
+.cell{padding:24px 22px;border-right:1.5px solid #3A424B}
+.cell:last-child{border-right:none}
+@media(max-width:820px){.cell.gap{border-top:1.5px solid #3A424B;border-right:none}}
+.cell .tag{font:600 13px/1 'Barlow Condensed';letter-spacing:.12em;text-transform:uppercase;color:#B9C0C7;margin-bottom:10px;display:block}
+.cell .fig{font-family:'Anton';font-size:clamp(30px,4vw,44px)}
+.cell .note{font-size:13.5px;color:#8F979F;margin-top:8px}
+.cell.gap{background:var(--red)}
+.cell.gap .tag{color:#FFD9DB}
+.cell.gap .fig{font-size:clamp(38px,5vw,58px);color:#fff}
+.cell.gap .note{color:#FFD9DB}
+.cell.gap.ahead{background:var(--green)}
+.cell.gap.ahead .tag,.cell.gap.ahead .note{color:#D7F3E4}
+
+.career{margin-top:26px;background:#1C232C;border:1.5px solid #3A424B;padding:26px 24px;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 18px}
+.career .big{font-family:'Anton';font-size:clamp(34px,5vw,56px);color:var(--hivis)}
+.career .desc{font-size:16px;color:#C7CDD3;max-width:46ch}
+.career .desc b{color:#fff}
+
+/* ---------- Fun conversions ---------- */
+.fun{padding:58px 0 30px}
+.fun h2{font-size:clamp(26px,3.4vw,38px)}
+.fun .sub{color:var(--ink-soft);margin:8px 0 30px;max-width:62ch}
+.fun-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:860px){.fun-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.fun-grid{grid-template-columns:1fr}}
+.fun-card{background:var(--card);border:1.5px solid var(--line);padding:22px 20px;position:relative}
+.fun-card .emoji{font-size:30px;line-height:1}
+.fun-card .qty{font-family:'Anton';font-size:38px;margin:10px 0 2px;color:var(--green-deep)}
+.fun-card .what{font-weight:600}
+.fun-card .basis{font-size:13px;color:var(--ink-soft);margin-top:6px}
+
+/* ---------- Ladder ---------- */
+.ladder-sec{padding:48px 0 60px;background:#F1EFE7;border-top:1.5px solid var(--line);border-bottom:1.5px solid var(--line)}
+.ladder-sec h2{font-size:clamp(26px,3.4vw,38px);max-width:22ch}
+.ladder-sec .sub{color:var(--ink-soft);margin:10px 0 34px;max-width:62ch}
+.ladders{display:grid;grid-template-columns:1fr 1fr;gap:30px;max-width:760px}
+@media(max-width:640px){.ladders{grid-template-columns:1fr}}
+.ladder h3{font:600 15px/1 'Barlow Condensed';letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
+.rung{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.rung .bar{height:26px;flex:1;display:flex;align-items:center;padding:0 10px;font:600 13px/1 'Barlow Condensed';letter-spacing:.06em}
+.rung.on .bar{background:var(--green);color:#fff}
+.rung.top .bar{background:var(--green-deep);color:var(--hivis)}
+.rung.off .bar{background:transparent;border:1.5px dashed #B9B4A6;color:#8C877A}
+.rung .yr{width:44px;text-align:right;font:600 13px/1 'Barlow Condensed';color:var(--ink-soft)}
+.ladder-note{margin-top:22px;font-size:15px;color:var(--ink-soft);max-width:62ch}
+
+/* ---------- Chart ---------- */
+.chart-sec{padding:56px 0 20px}
+.chart-sec h2{font-size:clamp(26px,3.4vw,38px)}
+.chart-sec .sub{color:var(--ink-soft);margin:8px 0 26px;max-width:62ch}
+.chart-box{background:var(--card);border:1.5px solid var(--line);padding:18px 12px 8px}
+.legend{display:flex;gap:22px;flex-wrap:wrap;margin:12px 6px 4px;font-size:14px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.key{width:26px;height:0;border-top:4px solid}
+.key.act{border-color:var(--ink)}
+.key.vic{border-color:var(--green)}
+.key.gapk{width:26px;height:14px;border:none;background:repeating-linear-gradient(45deg,rgba(210,35,42,.55) 0 4px,rgba(210,35,42,.12) 4px 8px)}
+
+/* ---------- CTA ---------- */
+.cta{padding:64px 0}
+.cta-inner{background:var(--ink);color:#fff;padding:46px 36px;position:relative}
+.cta h2{font-size:clamp(30px,4.4vw,52px);max-width:18ch}
+.cta h2 em{font-style:normal;color:var(--hivis)}
+.cta p{margin:18px 0 28px;color:#C7CDD3;max-width:58ch}
+.btn{display:inline-block;background:var(--hivis);color:var(--ink);font:600 16px/1 'Barlow Condensed';letter-spacing:.1em;text-transform:uppercase;padding:16px 28px;text-decoration:none;border:none;cursor:pointer}
+.btn:hover{background:#fff}
+.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.btn.ghost{background:transparent;color:#fff;border:1.5px solid #566069;margin-left:12px}
+.btn.ghost:hover{border-color:var(--hivis);color:var(--hivis);background:transparent}
+@media(max-width:520px){.btn.ghost{margin-left:0;margin-top:10px}}
+
+/* ---------- Methodology ---------- */
+.meth{padding:0 0 70px;font-size:15px;color:var(--ink-soft)}
+.meth details{border:1.5px solid var(--line);background:var(--card)}
+.meth summary{cursor:pointer;padding:16px 20px;font-weight:600;color:var(--ink);list-style:none;display:flex;justify-content:space-between;align-items:center}
+.meth summary::after{content:"+";font-family:'Anton';font-size:22px;color:var(--green)}
+.meth details[open] summary::after{content:"–"}
+.meth .body{padding:0 20px 22px;max-width:80ch}
+.meth h4{margin:16px 0 6px;color:var(--ink);font-size:15px}
+.meth ul{padding-left:20px}
+.meth li{margin-bottom:6px}
+.meth .warn{background:var(--hivis-soft);border-left:4px solid var(--green);padding:10px 14px;margin-top:14px;color:var(--ink)}
+footer{background:var(--ink);color:#8F979F;font-size:14px;padding:26px 0}
+footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+footer a{color:#C7CDD3}
+
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <strong>Ambo ACT</strong>
+    <span class="cond">Bargaining evidence series · No. 2 — Increments</span>
+  </div>
+</div>
+<div class="batten" aria-hidden="true"><div class="row"></div><div class="row"></div></div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">ACTAS EA 2023–2026 vs Ambulance Victoria EBA 2024</span>
+    <h1 class="display">Experience pays in Victoria.<br>In the ACT it <span class="flat">flatlines.</span></h1>
+    <p class="lede">Victorian paramedics now progress through <b>12 annual pay increments</b> — every year of experience is recognised on the payslip, all the way to year twelve. Under the ACTAS agreement, an Ambulance Paramedic reaches the top of the scale in about <b>five years</b>. After that, a 15-year veteran and a 5-year paramedic are paid <span class="hl"><b>exactly the same salary</b></span>. Enter your details below and see what that structure is costing you.</p>
+  </div>
+</header>
+
+<section class="calc" id="calc" aria-labelledby="calc-h">
+  <div class="wrap">
+    <h2 id="calc-h" class="display">What's your gap?</h2>
+    <p class="sub">Select your classification and years of service. Figures are <b>rolled-in salaries</b> — the ACT composite (31.58% + 2.2% roster adjustment) and the Victorian rolled-in rate are included, so this is what actually lands on the payslip before overtime and super.</p>
+
+    <div class="controls">
+      <div>
+        <span class="label" id="class-label">Your classification</span>
+        <div class="seg" role="group" aria-labelledby="class-label" id="seg"></div>
+      </div>
+      <div>
+        <label class="label" for="yos">Years of service (in classification)</label>
+        <div class="slider-row">
+          <input type="range" id="yos" min="1" max="15" step="1" value="8">
+          <div class="yos-badge num"><span id="yosVal">8</span><small>years</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="board" role="region" aria-live="polite" aria-label="Pay comparison result">
+      <div class="cell">
+        <span class="tag">ACT — <span id="actClass"></span></span>
+        <div class="fig num" id="actPay">$0</div>
+        <div class="note" id="actNote"></div>
+      </div>
+      <div class="cell">
+        <span class="tag">Victoria — <span id="vicClass"></span></span>
+        <div class="fig num" id="vicPay">$0</div>
+        <div class="note" id="vicNote"></div>
+      </div>
+      <div class="cell gap" id="gapCell">
+        <span class="tag" id="gapTag">Your gap this year</span>
+        <div class="fig num" id="gapPay">$0</div>
+        <div class="note" id="gapNote">rolled-in salary — penalties included, before overtime &amp; super</div>
+      </div>
+    </div>
+
+    <div class="career">
+      <span class="big num" id="careerGap">$0</span>
+      <span class="desc">is the <b>cumulative rolled-in salary shortfall over the next 10 years</b> if you stay at your current classification while your Victorian counterpart keeps climbing their increment scale.<span id="superNote"> Add ~12% again in lost superannuation.</span></span>
+    </div>
+  </div>
+</section>
+<div class="batten thin" aria-hidden="true"><div class="row"></div><div class="row"></div></div>
+
+<section class="fun" aria-labelledby="fun-h">
+  <div class="wrap">
+    <h2 id="fun-h" class="display">Or, to put it another way…</h2>
+    <p class="sub">Your 10-year gap of <b class="num" id="funGapEcho">$0</b>, converted into things that actually matter after a night shift.</p>
+    <div class="fun-grid" id="funGrid"></div>
+  </div>
+</section>
+
+<section class="ladder-sec" aria-labelledby="lad-h">
+  <div class="wrap">
+    <h2 id="lad-h" class="display">Two ladders. One is missing its rungs.</h2>
+    <p class="sub" id="ladderSub">The Ambulance Victoria EBA 2024 introduced annual increments to Year 12 for paramedics, on top of a four-year 16%+ wage deal. The ACTAS structure stops recognising service years early — the only way up is a different job.</p>
+    <div class="ladders">
+      <div class="ladder"><h3 id="ladVicTitle">Victoria — annual increments</h3><div id="ladVic"></div></div>
+      <div class="ladder"><h3 id="ladActTitle">ACT — increments</h3><div id="ladAct"></div></div>
+    </div>
+    <p class="ladder-note">Dashed rungs are years of experience that attract <b>no pay progression</b> under the current ACTAS agreement. This is the core of the claim: it's not (only) about the headline rate — it's about a structure that keeps rewarding the people who stay.</p>
+  </div>
+</section>
+
+<section class="chart-sec" aria-labelledby="chart-h">
+  <div class="wrap">
+    <h2 id="chart-h" class="display">The gap compounds</h2>
+    <p class="sub">Rolled-in salary by years of service for your selected classification. The hatched area is money that experience earns in Victoria — and doesn't in the ACT.</p>
+    <div class="chart-box">
+      <div id="chart" role="img" aria-label="Line chart comparing ACT and Victorian base salary by years of service"></div>
+      <div class="legend">
+        <span><span class="key act"></span>ACT (ACTAS EA)</span>
+        <span><span class="key vic"></span>Victoria (AV EBA 2024)</span>
+        <span><span class="key gapk"></span>The increment gap</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <div class="cta-inner">
+      <div class="batten thin" style="position:absolute;top:0;left:0;right:0" aria-hidden="true"><div class="row"></div><div class="row"></div></div>
+      <h2 class="display" style="margin-top:14px">Back the claim: <em>real increments</em> in the next ACTAS agreement.</h2>
+      <p>The ACTAS EA 2023–2026 reaches its nominal expiry on 31 March 2026. Bargaining is the moment to fix the structure. Victoria, and other services, have shown it can be done: annual progression that recognises experience to year 12, because retaining experienced paramedics is cheaper than replacing them.</p>
+      <a class="btn" href="#" id="shareBtn">Share your gap</a>
+      <a class="btn ghost" href="mailto:?subject=The%20increment%20gap">Email your MLA</a>
+    </div>
+  </div>
+</section>
+
+<section class="meth wrap" aria-labelledby="meth-h">
+  <details>
+    <summary id="meth-h">Data sources, methodology &amp; assumptions</summary>
+    <div class="body">
+      <h4>What is being compared</h4>
+      <p><b>Annual rolled-in salaries.</b> ACT figures are Annex A base rates <b>plus the 31.58% operational composite and 2.2% roster adjustment allowance</b> (×1.3378 — this reconciles exactly with the CMTEDD total-salary tables, e.g. AP2.1 $108,457 base → $145,094 total). Victorian figures are annualised aggregated base rates under the AV EBA 2024 <b>multiplied by an estimated rolled-in rate factor</b> for a rotating on-road roster. Both sides therefore include shift penalties on a comparable basis; overtime and superannuation are excluded from both. Note the Victorian RIR varies by roster group — verify the applicable factor in the AVEA 2024 rolled-in rate schedules before quoting figures.</p>
+      <h4>ACT sources</h4>
+      <ul>
+        <li>ACT Public Sector ACT Ambulance Service Enterprise Agreement 2023–2026, Annex A.</li>
+        <li>Advertised classification ranges, jobs.act.gov.au (Ambulance Paramedic 1: $91,571–$102,237, advertised Feb 2026).</li>
+        <li>CMTEDD Roster Adjustment Allowance salary tables (AP2 and ICP1 increment values by pay-rise date).</li>
+        <li>Intermediate AP1 steps interpolated between the published minimum and maximum; PTS rates are estimates pending confirmation against Annex A.</li>
+      </ul>
+      <h4>Victoria sources</h4>
+      <ul>
+        <li>Ambulance Victoria Enterprise Agreement 2024 (FWC AE528036, approved 14 Feb 2025): 4% p.a. increases for four years; new Year 2, 4, 5, 7, 8 increments; Year 10–12 increments phased in; $12,500 MICA relativity uplift; NEPT classifications moved into the 12-year structure.</li>
+        <li>Victorian Ambulance Union and AEA-V published bargaining outcome summaries.</li>
+      </ul>
+      <div class="warn"><b>Verify before you quote.</b> Victorian per-increment figures are working estimates constructed from the agreement's published structure and increases at 21 Oct 2025 rates, and the Victorian rolled-in factor (×1.27 on-road, ×1.22 NEPT) is an estimate. Replace both with the exact values from AVEA 2024 Appendix 1 (aggregated base rates) and the rolled-in rate schedules before publication. ACT PTS figures are also estimates. All rates and loadings live in one <code>RATES</code> object at the top of this page's source.</div>
+      <h4>Assumptions</h4>
+      <ul>
+        <li>"Years of service" is treated as years in classification for both jurisdictions.</li>
+        <li>10-year cumulative gap holds today's rates constant (no future EA increases on either side) — a conservative approach.</li>
+        <li>Conversion prices: flat white $5.50; Big Mac $8.20; return economy fare Canberra–Europe $1,900; 60L tank of 91 at $1.85/L; long daycare day $145 (pre-CCS); schooner $9.</li>
+      </ul>
+      <p style="margin-top:14px">This page is campaign material produced for the Ambo ACT bargaining evidence series. It is not payroll advice; individual entitlements depend on your circumstances and the applicable agreement.</p>
+    </div>
+  </details>
+</section>
+
+<div class="batten" aria-hidden="true"><div class="row"></div><div class="row"></div></div>
+<footer>
+  <div class="wrap">
+    <span>© Ambo ACT — built by paramedics, for paramedics.</span>
+    <span>Rates as at Feb 2026 · <a href="#calc">Recalculate</a></span>
+  </div>
+</footer>
+
+<script>
+/* =====================================================================
+   RATES — the single source of truth. Every figure is annual base salary.
+   status: "verified"  = taken directly from an official published figure
+           "derived"   = calculated from official figures (method noted)
+           "estimate"  = placeholder pending verification — REPLACE before publishing
+   ===================================================================== */
+const RATES = {
+  /* Displayed figures = steps[i] × loading (rolled-in / composite salary).
+     ACT loading 1.3378 = 31.58% operational composite + 2.2% roster adjustment
+     allowance — VERIFIED: reconciles exactly with the CMTEDD "Roster Adjustment
+     Allowance Total Salaries" tables (e.g. AP2.1 $108,457 → $145,094).
+     VIC loading = rolled-in rate factor — ESTIMATE: verify against AVEA 2024
+     Appendix 2/9 RIR schedules for the relevant roster before publishing. */
+  ACT: {
+    asAt: "First full pay period on/after 4 Dec 2025 (final ACTAS EA 2023–26 increase)",
+    grad: { name: "Graduate Paramedic Intern", vicKey: "grad", loading: 1.3378,
+      // $86,155 advertised Jul 2025 (Dec-24 rates) uplifted by the ~3.1% Dec-25 increase — derived
+      steps: [88850], capNote: "single rate during internship" },
+    ap:   { name: "Ambulance Paramedic 1", vicKey: "als", loading: 1.3378,
+      // $91,571 (AP1.1) and $102,237 (AP1.5) verified from Feb 2026 jobs.act.gov.au ad.
+      // Interior steps interpolated — replace with exact Annex A values.
+      steps: [91571, 94190, 96830, 99500, 102237], capNote: "top increment reached ≈ year 5" },
+    icp:  { name: "Intensive Care Paramedic 1", vicKey: "mica", loading: 1.3378,
+      // Derived from CMTEDD RAA tables (06/06/2024 values) uplifted by Dec-24 (+2.5%) and Dec-25 (+3.1%) increases.
+      steps: [105480, 109880, 113170, 116300], capNote: "top increment reached ≈ year 4" },
+    pts:  { name: "Patient Transport Officer", vicKey: "ata", loading: 1.25,
+      // ESTIMATE (base steps AND composite %) — PTS/NEPT composite differs from the
+      // 31.58% emergency-operations composite. Confirm against Annex A / clause M9 equivalents.
+      steps: [72000, 74600, 77100, 79600], capNote: "estimate — confirm against Annex A" }
+  },
+  VIC: {
+    asAt: "21 Oct 2025 rates (year 2 of AVEA 2024) — annualised aggregated base × rolled-in factor",
+    // ALL Victorian step values below are ESTIMATES built from the agreement's published
+    // structure (4%/yr increases, 12-year increment scale, $12,500 MICA uplift).
+    // Replace steps with exact annualised figures from AVEA 2024 Appendix 1, and the
+    // loading with the exact RIR factor for a rotating on-road roster, before publishing.
+    grad: { name: "Graduate Ambulance Paramedic", loading: 1.25, steps: [82500] },
+    als:  { name: "ALS Paramedic (qualified)", loading: 1.27,
+      steps: [99000,100700,102450,104200,106000,107800,109700,111600,113550,115550,117550,119600] },
+    mica: { name: "MICA Paramedic", loading: 1.27,
+      steps: [121500,123450,125450,127500,129550,131650,133800,136000,138200,140450,142750,145100] },
+    ata:  { name: "Ambulance Transport Attendant (NEPT)", loading: 1.22,
+      steps: [78000,79300,80600,81950,83300,84700,86100,87550,89000,90500,92000,93550] }
+  }
+};
+
+const CONVERSIONS = [
+  { emoji:"☕", unit:"flat whites", price:5.5,   basis:"$5.50 a cup", per:"annual" },
+  { emoji:"🍔", unit:"Big Macs", price:8.2,      basis:"$8.20 each", per:"annual" },
+  { emoji:"✈️", unit:"return flights to Europe", price:1900, basis:"$1,900 economy return", per:"career" },
+  { emoji:"⛽", unit:"tanks of fuel", price:111, basis:"60L at $1.85/L", per:"annual" },
+  { emoji:"🧒", unit:"days of daycare", price:145, basis:"$145/day before CCS", per:"annual" },
+  { emoji:"🍺", unit:"schooners", price:9,       basis:"$9 a pour", per:"annual" }
+];
+
+const CLASSES = [
+  { key:"grad", label:"Graduate" },
+  { key:"ap",   label:"AP" },
+  { key:"icp",  label:"ICP" },
+  { key:"pts",  label:"PTS" }
+];
+
+let state = { cls:"ap", yos:8 };
+const $ = id => document.getElementById(id);
+const fmt = n => "$" + Math.round(n).toLocaleString("en-AU");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function actSalary(cls, yos){
+  const c = RATES.ACT[cls];
+  return c.steps[Math.min(Math.max(yos,1), c.steps.length) - 1] * c.loading;
+}
+function vicSalary(cls, yos){
+  const c = RATES.VIC[RATES.ACT[cls].vicKey];
+  return c.steps[Math.min(Math.max(yos,1), c.steps.length) - 1] * c.loading;
+}
+function careerGap(cls, yos, horizon = 10){
+  let total = 0;
+  for (let k = 0; k < horizon; k++) total += vicSalary(cls, yos + k) - actSalary(cls, yos + k);
+  return total;
+}
+
+/* ---- count-up animation ---- */
+function animateNum(el, target, prefixNeg){
+  const from = el._val || 0;
+  el._val = target;
+  if (reduceMotion){ el.textContent = (prefixNeg && target>0 ? "–" : "") + fmt(Math.abs(target)); return; }
+  const t0 = performance.now(), dur = 500;
+  function tick(t){
+    const p = Math.min((t - t0) / dur, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    const v = from + (target - from) * eased;
+    el.textContent = (prefixNeg && target>0 ? "–" : "") + fmt(Math.abs(v));
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+/* ---- render ---- */
+function render(){
+  const { cls, yos } = state;
+  const act = actSalary(cls, yos), vic = vicSalary(cls, yos);
+  const gap = vic - act;
+  const cGap = careerGap(cls, yos);
+  const actC = RATES.ACT[cls], vicC = RATES.VIC[actC.vicKey];
+
+  $("actClass").textContent = actC.name;
+  $("vicClass").textContent = vicC.name;
+  animateNum($("actPay"), act);
+  animateNum($("vicPay"), vic);
+  animateNum($("gapPay"), gap, true);
+
+  const actStepN = Math.min(yos, actC.steps.length);
+  const vicStepN = Math.min(yos, vicC.steps.length);
+  $("actNote").textContent = (yos > actC.steps.length
+    ? `stuck on increment ${actC.steps.length} since year ${actC.steps.length}`
+    : `increment ${actStepN} of ${actC.steps.length}`) + " · incl. 31.58% composite + 2.2% RAA";
+  $("vicNote").textContent = `increment ${vicStepN} of ${vicC.steps.length} · incl. rolled-in rate`;
+
+  const gapCell = $("gapCell");
+  if (gap <= 0){
+    gapCell.classList.add("ahead");
+    $("gapTag").textContent = "You're ahead this year";
+    $("gapNote").textContent = "…until the increments overtake you. Slide the years forward.";
+  } else {
+    gapCell.classList.remove("ahead");
+    $("gapTag").textContent = "Your gap this year";
+    $("gapNote").textContent = "rolled-in salary — penalties included, before overtime & super";
+  }
+
+  animateNum($("careerGap"), cGap, true);
+  $("funGapEcho").textContent = fmt(Math.max(cGap,0));
+
+  renderFun(Math.max(gap,0), Math.max(cGap,0));
+  renderLadders(cls, yos);
+  renderChart(cls, yos);
+}
+
+function renderFun(annualGap, careerGapV){
+  $("funGrid").innerHTML = CONVERSIONS.map(c => {
+    const qty = Math.floor(careerGapV / c.price);
+    return `<div class="fun-card">
+      <div class="emoji" aria-hidden="true">${c.emoji}</div>
+      <div class="qty num">${qty.toLocaleString("en-AU")}</div>
+      <div class="what">${c.unit} <span style="color:var(--red);font-weight:700">over the next decade</span></div>
+      <div class="basis">${c.basis}</div>
+    </div>`;
+  }).join("");
+}
+
+function renderLadders(cls, yos){
+  const actC = RATES.ACT[cls], vicC = RATES.VIC[actC.vicKey];
+  const maxY = Math.max(vicC.steps.length, 12);
+  $("ladVicTitle").textContent = `Victoria — ${vicC.name}`;
+  $("ladActTitle").textContent = `ACT — ${actC.name}`;
+  const rung = (i, on, top, text) =>
+    `<div class="rung ${on ? (top ? "top" : "on") : "off"}">
+       <span class="yr num">Yr ${i}</span><span class="bar">${text}</span>
+     </div>`;
+  let vicHtml = "", actHtml = "";
+  for (let i = maxY; i >= 1; i--){
+    const vOn = i <= vicC.steps.length;
+    vicHtml += rung(i, vOn, vOn && i === vicC.steps.length,
+      vOn ? fmt(vicC.steps[i-1] * vicC.loading) : "");
+    const aOn = i <= actC.steps.length;
+    actHtml += rung(i, aOn, aOn && i === actC.steps.length,
+      aOn ? fmt(actC.steps[i-1] * actC.loading) : "no progression");
+  }
+  $("ladVic").innerHTML = vicHtml;
+  $("ladAct").innerHTML = actHtml;
+}
+
+/* ---- SVG step chart ---- */
+function renderChart(cls, yos){
+  const W = 980, H = 420, padL = 78, padR = 20, padT = 24, padB = 44;
+  const years = 15;
+  const actPts = [], vicPts = [];
+  for (let y = 1; y <= years; y++){ actPts.push(actSalary(cls,y)); vicPts.push(vicSalary(cls,y)); }
+  const all = actPts.concat(vicPts);
+  const minV = Math.floor(Math.min(...all) / 5000) * 5000 - 2500;
+  const maxV = Math.ceil(Math.max(...all) / 5000) * 5000 + 2500;
+  const X = y => padL + (y - 1) / (years - 1) * (W - padL - padR);
+  const Y = v => padT + (1 - (v - minV) / (maxV - minV)) * (H - padT - padB);
+
+  const step = pts => {
+    let d = `M ${X(1)} ${Y(pts[0])}`;
+    for (let i = 1; i < pts.length; i++) d += ` L ${X(i+1)} ${Y(pts[i-1])} L ${X(i+1)} ${Y(pts[i])}`;
+    return d;
+  };
+  const area = () => {
+    let d = `M ${X(1)} ${Y(vicPts[0])}`;
+    for (let i = 1; i < vicPts.length; i++) d += ` L ${X(i+1)} ${Y(vicPts[i-1])} L ${X(i+1)} ${Y(vicPts[i])}`;
+    d += ` L ${X(years)} ${Y(actPts[years-1])}`;
+    for (let i = actPts.length - 1; i >= 1; i--) d += ` L ${X(i+1)} ${Y(actPts[i])} L ${X(i+1)} ${Y(actPts[i-1])}`;
+    d += " Z";
+    return d;
+  };
+
+  let grid = "";
+  for (let v = minV + 2500; v < maxV; v += 5000){
+    grid += `<line x1="${padL}" y1="${Y(v)}" x2="${W-padR}" y2="${Y(v)}" stroke="#E7E4DA" stroke-width="1"/>
+             <text x="${padL-10}" y="${Y(v)+4}" text-anchor="end" font-size="12" fill="#8C877A" font-family="Barlow">${"$"+(v/1000)+"k"}</text>`;
+  }
+  let xlab = "";
+  for (let y = 1; y <= years; y += 2){
+    xlab += `<text x="${X(y)}" y="${H-14}" text-anchor="middle" font-size="12" fill="#8C877A" font-family="Barlow">${y}</text>`;
+  }
+
+  const marker = `<line x1="${X(Math.min(yos,years))}" y1="${padT}" x2="${X(Math.min(yos,years))}" y2="${H-padB}" stroke="#12161B" stroke-dasharray="3 4" stroke-width="1.5"/>
+    <text x="${X(Math.min(yos,years))}" y="${padT-6}" text-anchor="middle" font-size="12" font-weight="600" fill="#12161B" font-family="Barlow Condensed">YOU · YR ${yos}</text>`;
+
+  $("chart").innerHTML = `
+  <svg viewBox="0 0 ${W} ${H}" width="100%" height="auto" role="presentation">
+    <defs>
+      <pattern id="hatch" width="8" height="8" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+        <rect width="8" height="8" fill="rgba(210,35,42,.10)"/>
+        <line x1="0" y1="0" x2="0" y2="8" stroke="rgba(210,35,42,.5)" stroke-width="3"/>
+      </pattern>
+    </defs>
+    ${grid}${xlab}
+    <path d="${area()}" fill="url(#hatch)"/>
+    <path d="${step(actPts)}" fill="none" stroke="#12161B" stroke-width="3.5"/>
+    <path d="${step(vicPts)}" fill="none" stroke="#00703C" stroke-width="3.5"/>
+    ${marker}
+    <text x="${padL+8}" y="${H-padB+30}" font-size="12" fill="#8C877A" font-family="Barlow">Years of service →</text>
+  </svg>`;
+}
+
+/* ---- controls ---- */
+function buildSeg(){
+  $("seg").innerHTML = CLASSES.map(c =>
+    `<button type="button" data-k="${c.key}" aria-pressed="${c.key===state.cls}">${c.label}</button>`).join("");
+  $("seg").querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    state.cls = b.dataset.k;
+    $("seg").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+    render();
+  }));
+}
+$("yos").addEventListener("input", e => {
+  state.yos = +e.target.value;
+  $("yosVal").textContent = state.yos;
+  render();
+});
+$("shareBtn").addEventListener("click", e => {
+  e.preventDefault();
+  const gap = careerGap(state.cls, state.yos);
+  const txt = `As a ${RATES.ACT[state.cls].name} with ${state.yos} years' service, I'd be ${fmt(gap)} better off over the next decade under the Ambulance Victoria EBA's 12-increment structure. The next ACTAS agreement needs real increments. #AmboACT`;
+  if (navigator.share){ navigator.share({ text: txt, url: location.href }).catch(()=>{}); }
+  else { navigator.clipboard.writeText(txt + " " + location.href).then(()=>{ e.target.textContent = "Copied to clipboard"; setTimeout(()=> e.target.textContent = "Share your gap", 1800); }); }
+});
+
+buildSeg();
+render();
+</script>
+</body>
+</html>
